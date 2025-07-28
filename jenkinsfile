@@ -11,7 +11,7 @@ pipeline {
         timeout(time: 6, unit: 'HOURS')
         ansiColor('xterm')
     }
-}
+
 
 parameters {
 string(name: 'accounts', defaultValue: '', description: 'Enter Commit For ml_inference', trim: true)
