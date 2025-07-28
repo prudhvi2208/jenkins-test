@@ -51,16 +51,28 @@ stages {
                 }
             }
         }
-        stage("Data") {
-            steps {
-                script {
-                    def components = (env.COMPONENTS_TO_BUILD ?: '').split(',')
-                    components.each { component ->
-                        echo "Building component: ${component}"
-                    }
+stage("Get Pods") {
+     steps {
+            def componentParams = load 'component-parameters.groovy'
+            def podsToProcess = []
+            def components = (env.COMPONENTS_TO_BUILD ?: '').split(',')
+            script {
+                components.each {component ->
+                        def relatedPods = componentParams.getPodsForComponent(component)
+                        podsToProcess.addAll(relatedPods)
                 }
-            }
-        }
+                podsToProcess = podsToProcess.unique()
+                env.PODS_TO_BUILD = podsToProcess.join(',') as String
+                echo """
+                        =========================================
+                        Build Configuration:
+                        Build Type: ${buildType}
+                        Pods to Build: ${podsToProcess.join(', ')}
+                        =========================================
+                    """
+            }  
+    }
+}
     }
 }
     
