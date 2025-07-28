@@ -57,7 +57,7 @@ stage("Get Pods") {
         script {
             def componentParams = load 'components-parameters.groovy'
             def podsToProcess = []
-            def components = (env.COMPONENTS_TO_BUILD ?: '').split(':')
+            def components = (env.COMPONENTS_TO_BUILD ?: '').split(':')[0].trim()
                 components.each {component ->
                         def relatedPods = componentParams.getPodsForComponent(component)
                         podsToProcess.addAll(relatedPods)
