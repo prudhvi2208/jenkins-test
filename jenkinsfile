@@ -59,7 +59,8 @@ stage("Get Pods") {
             def podsToProcess = []
             def components = (env.COMPONENTS_TO_BUILD ?: '').split(',')
                 components.each {component ->
-                        def relatedPods = componentParams.getPodsForComponent(component)
+                        def componentName = component.split(':')[0].trim()
+                        def relatedPods = componentParams.getPodsForComponent(componentName)
                         podsToProcess.addAll(relatedPods)
                 }
                 podsToProcess = podsToProcess.unique()
