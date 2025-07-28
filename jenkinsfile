@@ -1,0 +1,67 @@
+pipeline {
+        agent { label 'master' }
+    options {
+        // Add timestamps to console output
+        timestamps()
+        // Keep only last 10 builds
+        buildDiscarder(logRotator(numToKeepStr: '10'))
+        // Don't run concurrent builds
+        disableConcurrentBuilds()
+        // Add timeouts for various operations
+        timeout(time: 6, unit: 'HOURS')
+        ansiColor('xterm')
+    }
+}
+
+parameters {
+string(name: 'accounts', defaultValue: '', description: 'Enter Commit For ml_inference', trim: true)
+string(name: 'agent-coaching-ai', defaultValue: '', description: 'Enter Commit For ml_inference', trim: true)
+string(name: 'agent-coaching-backend', defaultValue: '', description: 'Enter Commit For ml_inference', trim: true)
+string(name: 'agent-coaching-model', defaultValue: '', description: 'Enter Commit For ml_inference', trim: true)
+}
+
+  environment {
+        DOCKER_BUILDKIT = '1'
+        COMPOSE_DOCKER_CLI_BUILD = '1'
+        BUILD_NUMBER = "${params.RELEASE_VERSION}"
+        DOCKER_REGISTRY_URL = "940482441105.dkr.ecr.us-east-1.amazonaws.com/${params.ECR_NAME}:uxo"
+        ARTIFACTORY_URL = "${params.ARTIFACTORY_URL}"
+        RELEASE_VERSION = "${params.RELEASE_VERSION}"
+        // Add timeouts for various operations
+        DOCKER_BUILD_TIMEOUT = '60m'
+        HELM_TIMEOUT = '10m'
+        // Add resource constraints
+        DOCKER_MEMORY_LIMIT = '4g'
+        DOCKER_CPU_LIMIT = '2.0'
+        USE_INCREMENTAL = "${params.USE_INCREMENTAL_BUILD}"
+        BASE_IMAGE_TAG = "${params.BASE_IMAGE_TAG}"
+    }
+
+stages {
+        stage("Get Components") {
+            steps {
+                script {
+                    def componentsToBuild = []
+                    params.each { key, value ->
+                       if (value != null && !value.toString().isEmpty()) {
+                            componentsToBuild.add("${key}: ${value.trim()}")
+                        }
+                    }
+                    env.COMPONENTS_TO_BUILD = componentsToBuild.join(',') as String
+                }
+            }
+        }
+        stage("Data") {
+            steps {
+                script {
+                    def components = (env.COMPONENTS_TO_BUILD ?: '').split(',')
+                    components.each { component ->
+                        echo "Building component: ${component}"
+                    }
+                }
+            }
+        }
+    }
+}
+    
+  
