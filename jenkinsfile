@@ -47,7 +47,7 @@ stages {
                             componentsToBuild.add("${key}: ${value.trim()}")
                         }
                     }
-                    env.COMPONENTS_TO_BUILD = componentsToBuild.join(',') as String
+                    env.COMPONENTS_TO_BUILD = componentsToBuild.join(',')
                 }
             }
         }
