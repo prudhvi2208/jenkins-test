@@ -50,6 +50,7 @@ stages {
                     env.COMPONENTS_TO_BUILD = componentsToBuild.join(',') as String
                 }
             }
+        }
         
 stage("Get Pods") {
      steps {
@@ -75,6 +76,3 @@ stage("Get Pods") {
         }
 }
 }
-}
-  
-  
