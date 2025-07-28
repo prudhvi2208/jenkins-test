@@ -53,7 +53,7 @@ stages {
         }
 stage("Get Pods") {
      steps {
-            def componentParams = load 'component-parameters.groovy'
+            def componentParams = load 'components-parameters.groovy'
             def podsToProcess = []
             def components = (env.COMPONENTS_TO_BUILD ?: '').split(',')
             script {
