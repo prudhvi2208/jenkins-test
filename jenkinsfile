@@ -70,9 +70,10 @@ stage("Get Pods") {
                         Pods to Build: ${podsToProcess.join(', ')}
                         =========================================
                     """
-            }  
-    }
+                    }  
+            }
+        }
 }
-    }
+}
   
   
