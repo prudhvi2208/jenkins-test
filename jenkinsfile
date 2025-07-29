@@ -59,6 +59,7 @@ stage("Get Pods") {
             def podsToProcess = []
             def components = (env.COMPONENTS_TO_BUILD ?: '').split(',').collect { it.split(':')[0]?.trim() }
                 components.each {component ->
+                        echo "Building component: ${component}"
                         def relatedPods = componentParams.getPodsForComponent(component)
                         podsToProcess.addAll(relatedPods)
                 }
