@@ -62,7 +62,7 @@ stage("Get Pods") {
             echo "Components to build: ${components}"
                 components.each {component ->
                         echo "Building component: ${component}"
-                        def relatedPods = componentParams.getPodsForComponent("agent-coaching-ai")
+                        def relatedPods = componentParams.getPodsForComponent(component)
                         podsToProcess.addAll(relatedPods)
                 }
                 podsToProcess = podsToProcess.unique()
