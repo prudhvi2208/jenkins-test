@@ -85,7 +85,10 @@ stage ("Get Commits") {
                 def componentName = "${component.split(':')[0]?.trim()}"
                 def CommitValue = "${component.split(':')[1]?.trim()}"
                 echo "${componentName}, ${CommitValue}"
-
+                parallelBuilds[component] = {
+                                        echo "Building component: ${componentName} with commit: ${commitValue}"
+                                    }
+                parallel parallelBuilds
             }
 
         }
