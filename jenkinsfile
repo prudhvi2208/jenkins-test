@@ -56,10 +56,10 @@ stage("Get Pods") {
      steps {
         script {
             def componentParams = load 'components-parameters.groovy'
-            echo "LOaded components-parameters.groovy"
             def podsToProcess = []
             def components = (env.COMPONENTS_TO_BUILD ?: '').split(',').collect { it.split(':')[0]?.trim() }
-            echo "Components to build: ${components}"
+            def commits = (env.COMPONENTS_TO_BUILD ?: '').split(',').collect { it.split(':')[1]?.trim() }
+            echo "Building commits: ${commits}"
                 components.each {component ->
                         echo "Building component: ${component}"
                         def relatedPods = componentParams.getPodsForComponent(component)
