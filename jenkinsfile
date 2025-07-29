@@ -76,5 +76,20 @@ stage("Get Pods") {
                     }  
             }
         }
+stage ("Get Commits") {
+    steps {
+        script {
+            def ComponentsAndCommits = (env.COMPONENTS_TO_BUILD ?: '').split(',')
+            def parallelBuilds = [:]
+            ComponentsAndCommits.each { component ->
+                def componentName = ${component.split(':')[0]?.trim()}
+                def CommitValue = ${component.split(':')[1]?.trim()}
+                echo ${componentName}, ${CommitValue}
+
+            }
+
+        }
+    }
+}
 }
 }
