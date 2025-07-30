@@ -41,8 +41,11 @@ stages {
         stage("Get Components") {
             steps {
                 script {
+                    def components = ['agent-coaching-model', 'agent-coaching-ai', 'agent-coaching-backend']
                     def componentsToBuild = []
-                    params.each { key, value ->
+                    components.each { component ->
+                       def key = component
+                       def value = params.get(component)
                        if (value != null && !value.toString().isEmpty()) {
                             componentsToBuild.add("${key}: ${value.trim()}")
                         }
